@@ -1,0 +1,81 @@
+
+server:
+    port: 8888
+spring:
+    application:
+        name: cloud-config-server
+#    security:
+#        user:
+#          name: "client"
+#          password: "client"
+    profiles:
+      #   默认的profile为dev，其他环境通过指定启动参数使用不同的profile，比如：
+      #   测试环境：java -jar eureka-server.jar --spring.profiles.active=test
+      #   生产环境：java -jar eureka-server.jar --spring.profiles.active=prod
+      active: dev
+
+
+---
+# 三个 - 符号就可以进行分割配置
+# 开发环境配置
+spring:
+    profiles: dev
+    cloud:
+        config:
+            server:
+                git:
+                    uri: https://github.com/StreamPlume/cloud-demo.git
+                    default-label: master
+                    search-paths: cloud-config-repo/*
+                    #  对于使用git,svn做为后端配置，从远程库获取配置文件，需要存储到本地文件。
+                    #  默认存储在系统临时目录下，目录名的前缀为config-repo-，如在linux下时可能是/tmp/config-repo-。
+                    #  因为/tmp下的内容有可能被误删，所有为了保险，最好修改存储目录
+                    basedir: /var/spring-cloud-repo
+eureka:
+    client:
+        serviceUrl:
+            defaultZone: http://192.168.0.101:8761/eureka/
+    instance:
+      prefer-ip-address: true
+      # 心跳检测检测与续约时间   测试时将值设置设置小些，保证服务关闭后注册中心能及时踢出服务
+#      lease-renewal-interval-in-seconds: 1 # 每间隔1s，向服务端发送一次心跳，证明自己依然”存活“.心跳时间，即服务续约间隔时间（缺省为30s）
+#      lease-expiration-duration-in-seconds: 2 #  告诉服务端，如果我2s之内没有给你发心跳，就代表我“死”了，将我踢出掉。（缺省为90s）
+      health-check-url-path: /actuator/health
+      leaseRenewalIntervalInSeconds: 5
+#      metadata-map:
+#        user.name: ${spring.security.user.name}
+#        user.password: ${spring.security.user.password}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
+
+---
+spring:
+  profiles: prod
+  cloud:
+    config:
+      server:
+        default-label: master
+        git:
+          search-paths: cloud-config-repo
+          uri: https://github.com/StreamPlume/cloud-demo.git
+
+eureka:
+    client:
+        serviceUrl:
+            defaultZone: http://192.168.0.101:8761/eureka/
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS

@@ -1,0 +1,61 @@
+
+server:
+  port: 8761
+
+spring:
+  application:
+    name: eureka-server
+  profiles:
+    #   默认的profile为dev，其他环境通过指定启动参数使用不同的profile，比如：
+    #   测试环境：java -jar eureka-server.jar --spring.profiles.active=test
+    #   生产环境：java -jar eureka-server.jar --spring.profiles.active=prod
+    active: dev
+
+
+---
+# 开发环境配置
+spring:
+  profiles: dev
+
+eureka:
+  client:
+    # 是否从eureka 注册中心上获取注册的服务信息（因为单机版将此服务当作注册中心，所以没必再从注册中心拉取注册服务信息)
+    #  是否从 Server 中获取服务列表 ，设置为 false ，如果需要配置高可用的 Eureka Server 需要设置为 true
+    fetchRegistry: false
+    # 配置禁用它将自己作为客户端注册的行为（在默认设置下，该服务注册中心也会将自己作为客户端来尝试注册它自己）
+    ##  是否注册到服务中 ，由于是单机版本，设置为 false ， 如果需要配置高可用的 Eureka Server 需要设置为 true
+    registerWithEureka: false
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+  instance:
+    hostname: 127.0.0.1
+    prefer-ip-address: true #将IP注册到Eureka Server上，如果不配置就是机器的主机名
+  server:  # 配置属性，但由于 Eureka 自我保护模式以及心跳周期长的原因，经常会遇到 Eureka Server 不剔除已关停的节点的问题
+    enable-self-preservation: false # 设为false，关闭自我保护。 测试时关闭自我保护机制，保证不可用服务及时踢出， 生产环境不建议关闭
+    eviction-interval-timer-in-ms: 5000 # 扫描失效服务的间隔时间（单位毫秒，默认是60*1000）即60秒
+
+---
+# 测试环境配置
+spring:
+  profiles: test
+
+---
+# 生产环境配置
+spring:
+  profiles: prod
+
+eureka:
+  client:
+    #  是否从 Server 中获取服务列表 ，设置为 false ，如果需要配置高可用的 Eureka Server 需要设置为 true
+    fetchRegistry: true
+    ##  是否注册到服务中 ，由于是单机版本，设置为 false ， 如果需要配置高可用的 Eureka Server 需要设置为 true
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+  instance:
+    hostname: 127.0.0.1
+    prefer-ip-address: true #将IP注册到Eureka Server上，如果不配置就是机器的主机名
+  server:  # 配置属性，但由于 Eureka 自我保护模式以及心跳周期长的原因，经常会遇到 Eureka Server 不剔除已关停的节点的问题
+    enable-self-preservation: true # 设为 true，开启自我保护。 生产环境不建议关闭
+    eviction-interval-timer-in-ms: 60000  # 扫描失效服务的间隔时间（单位毫秒，默认是60*1000）即60秒
+

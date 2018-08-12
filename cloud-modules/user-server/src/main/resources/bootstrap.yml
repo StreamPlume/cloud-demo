@@ -1,0 +1,87 @@
+
+server:
+  port: 8091
+spring:
+  application:
+    name: user-server
+  profiles:
+    active: dev
+
+---
+
+spring:
+  profiles: dev
+  cloud:
+    # 开启通过注册中心来访问 cloud-config-server 服务的功能
+    config:
+      discovery:
+        enabled: true
+        service-id:  cloud-config-server
+      # 用来定位Git中的资源
+      name: cloud-simple-test  /cloud-modules/user-server/user-server-dev.yml
+      profile: ${config.profile:dev}
+      label: master
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  zipkin:
+    base-url: http://127.0.0.1:9411
+eureka:
+  instance:
+    prefer-ip-address: true
+    status-page-url-path: /actuator/info
+    health-check-url-path: /actuator/health
+  client:
+    serviceUrl:
+      defaultZone: http://127.0.0.1:8761/eureka/
+#      defaultZone: http://192.168.0.104:8761/eureka/ # 曹总电脑
+#      defaultZone: http://eureka.didispace.com/
+
+#应用自定义配置信息
+#server.port=8081
+#service name
+#spring.application.name=cloud-simple-service
+
+# ================= spring mvc 返回 json字符配置信息
+# 指定日期格式的格式
+#spring.jackson.date-format=yyyy-MM-dd HH:mm:ss
+#spring.jackson.time-zone=GMT+8
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      cors:
+        allowed-origins: "*"
+        allowed-methods: "*"
+
+---
+
+spring:
+  profiles: prod
+  cloud:
+    # 开启通过注册中心来访问 cloud-config-server 服务的功能
+#    config:
+#      discovery:
+#        enabled: true
+#        service-id: cloud-config-server
+#      # 用来定位Git中的资源
+#      name: cloud-simple
+#      profile: ${config.profile:prod}
+#      label: master
+  zipkin:
+    base-url: http://127.0.0.1:9411
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://192.168.0.102:8761/eureka/
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      cors:
+        allowed-origins: "*"
+        allowed-methods: "*"

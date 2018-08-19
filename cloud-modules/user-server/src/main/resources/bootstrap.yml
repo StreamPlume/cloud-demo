@@ -17,8 +17,8 @@ spring:
       discovery:
         enabled: true
         service-id:  cloud-config-server
-      # 用来定位Git中的资源
-      name: cloud-simple-test  /cloud-modules/user-server/user-server-dev.yml
+      # 用来定位Git中的资源 cloud-config-repo/cloud-modules/user-server/user-server-dev.yml
+      name: user-server
       profile: ${config.profile:dev}
       label: master
     bus:
@@ -31,8 +31,8 @@ spring:
   zipkin:
     base-url: http://127.0.0.1:9411
   rabbitmq:
-    host: 127.0.0.1
-#    host: 192.168.0.105
+#    host: 127.0.0.1
+    host: 192.168.0.105
     port: 5672
     username: guest
     password: guest
@@ -44,8 +44,8 @@ eureka:
     health-check-url-path: /actuator/health
   client:
     serviceUrl:
-#      defaultZone: http://127.0.0.1:8761/eureka/
-      defaultZone: http://192.168.0.103:8761/eureka/
+      defaultZone: http://127.0.0.1:8761/eureka/
+#      defaultZone: http://192.168.0.103:8761/eureka/
 #      defaultZone: http://eureka.didispace.com/
 
 #应用自定义配置信息

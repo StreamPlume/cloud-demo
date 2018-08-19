@@ -46,6 +46,17 @@
             <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
         </dependency>
 
+		<!-- start 添加消息总线，进行修改配置自动推送更新 -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-bus</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-stream-binder-rabbit</artifactId>
+		</dependency>
+		<!-- end 添加消息总线，进行修改配置自动推送更新 -->
+
         <!-- start  调用链跟踪 sleuth  zipkin 配置 -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>

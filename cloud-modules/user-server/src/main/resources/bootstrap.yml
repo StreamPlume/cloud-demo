@@ -14,6 +14,7 @@ spring:
   cloud:
     # 开启通过注册中心来访问 cloud-config-server 服务的功能
     config:
+      # 开启消息总线后，可以通过 actuator/bus-refresh/ 刷新配置，得到最新提交的配置。 然后 刷新 @RefreshScope 修饰的类
       discovery:
         enabled: true
         service-id:  cloud-config-server
@@ -22,6 +23,7 @@ spring:
       profile: ${config.profile:dev}
       label: master
     bus:
+      # 开启 消息总线 bus stream
       enabled: true
       trace:
         enabled: true

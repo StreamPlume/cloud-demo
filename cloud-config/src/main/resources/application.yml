@@ -31,6 +31,11 @@ spring:
                     #  默认存储在系统临时目录下，目录名的前缀为config-repo-，如在linux下时可能是/tmp/config-repo-。
                     #  因为/tmp下的内容有可能被误删，所有为了保险，最好修改存储目录
                     basedir: /var/spring-cloud-repo
+        bus:
+          #  启用消息总线(实际使用spring-boot-starter-actuator 中bus-refresh 接口刷新配置)
+          enabled: true
+          trace:
+            enabled: true
 eureka:
     client:
         serviceUrl:

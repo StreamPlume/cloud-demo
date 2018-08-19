@@ -29,9 +29,13 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://127.0.0.1:8761/eureka/
-#      defaultZone: http://192.168.0.104:8761/eureka/ # 曹总电脑
+#      defaultZone: http://127.0.0.1:8761/eureka/
+      defaultZone: http://192.168.0.103:8761/eureka/
 #      defaultZone: http://eureka.didispace.com/
+  instance:
+    prefer-ip-address: true
+    status-page-url-path: /actuator/info
+    health-check-url-path: /actuator/health
 
 feign:
   # @FeignClient(name = "xxx",fallback = Xxx.class) 要使fallback起作用，需要这里配置开启

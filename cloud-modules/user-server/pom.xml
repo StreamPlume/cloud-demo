@@ -46,6 +46,16 @@
 			<!--<artifactId>spring-cloud-starter-netflix-turbine</artifactId>-->
 		<!--</dependency>-->
 
+		<!-- start 添加消息总线，进行修改配置自动推送更新或其他消息推送业务 -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-bus</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-stream-binder-rabbit</artifactId>
+		</dependency>
+		<!-- end 添加消息总线，进行修改配置自动推送更新或其他消息推送业务 -->
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -56,8 +66,6 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
-
-
 		<!--<dependency>-->
 			<!--<groupId>org.springframework.cloud</groupId>-->
 			<!--<artifactId>spring-cloud-starter-netflix-turbine-stream</artifactId>-->
@@ -67,6 +75,7 @@
 			<!--<artifactId>spring-cloud-starter-openfeign</artifactId>-->
 		<!--</dependency>-->
 
+		<!-- start 调用链跟踪  -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-sleuth</artifactId>
@@ -80,7 +89,7 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-sleuth-zipkin</artifactId>
 		</dependency>
-
+		<!-- end 调用链跟踪  -->
 
 
 		<dependency>

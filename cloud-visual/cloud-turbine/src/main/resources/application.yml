@@ -19,9 +19,6 @@ spring:
 spring:
   profiles: dev
 
-management:
-  port: 8081
-
 eureka:
   client:
     service-url:

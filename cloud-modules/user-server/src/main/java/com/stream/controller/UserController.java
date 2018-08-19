@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Stream on 2018/7/4.
@@ -64,5 +65,10 @@ public class UserController {
         user.setName("user-server test");
         user.setSex("man");
         return user;
+    }
+
+    @GetMapping("/queryGit")
+    public Map<String,String> queryGit() {
+        return userService.getConfig();
     }
 }

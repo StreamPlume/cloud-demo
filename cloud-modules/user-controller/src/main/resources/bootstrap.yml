@@ -7,10 +7,17 @@ spring:
   profiles:
     active: dev
 
+#  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#  +++++++++++++++++++++++++ start  profile.active = dev  +++++++++++++++++++++++
+#  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ---
 
 spring:
   profiles: dev
+  security:
+    user:
+      name: 'admin'
+      password: 'admin'
   cloud:
     # 开启通过注册中心来访问 cloud-config-server 服务的功能
     config:
@@ -18,24 +25,38 @@ spring:
         enabled: true
         service-id:  cloud-config-server
       # 用来定位Git中的资源
-      name: cloud-simple-test
+      name: user-server
       profile: ${config.profile:dev}
       label: master
+    bus:
+      # 开启 消息总线 bus stream
+      enabled: true
+      trace:
+        enabled: true
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
   zipkin:
       base-url: http://127.0.0.1:9411
+  rabbitmq:
+    #    host: 127.0.0.1
+      host: 192.168.0.105
+      port: 5672
+      username: guest
+      password: guest
 eureka:
   client:
     serviceUrl:
-#      defaultZone: http://127.0.0.1:8761/eureka/
-      defaultZone: http://192.168.0.103:8761/eureka/
+      defaultZone: http://127.0.0.1:8761/eureka/
+#      defaultZone: http://192.168.0.103:8761/eureka/
 #      defaultZone: http://eureka.didispace.com/
   instance:
     prefer-ip-address: true
     status-page-url-path: /actuator/info
     health-check-url-path: /actuator/health
+    metadata-map:
+      user.name: ${spring.security.user.name}
+      user.password: ${spring.security.user.password}
 
 feign:
   # @FeignClient(name = "xxx",fallback = Xxx.class) 要使fallback起作用，需要这里配置开启
@@ -51,6 +72,10 @@ management:
         allowed-origins: "*"
         allowed-methods: "*"
 
+
+#  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#  +++++++++++++++++++++++++ start  profile.active = prod  ++++++++++++++++++++++
+#  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ---
 
 spring:

@@ -7,10 +7,17 @@ spring:
   profiles:
     active: dev
 
+#  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#  +++++++++++++++++++++++++ start  profile.active = dev  +++++++++++++++++++++++
+#  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ---
 
 spring:
   profiles: dev
+  security:
+    user:
+      name: 'admin'
+      password: 'admin'
   cloud:
     # 开启通过注册中心来访问 cloud-config-server 服务的功能
     config:
@@ -44,6 +51,9 @@ eureka:
     prefer-ip-address: true
     status-page-url-path: /actuator/info
     health-check-url-path: /actuator/health
+    metadata-map:
+      user.name: ${spring.security.user.name}
+      user.password: ${spring.security.user.password}
   client:
     serviceUrl:
       defaultZone: http://127.0.0.1:8761/eureka/
@@ -69,6 +79,10 @@ management:
         allowed-origins: "*"
         allowed-methods: "*"
 
+
+#  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#  +++++++++++++++++++++++++ start  profile.active = prod  ++++++++++++++++++++++
+#  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ---
 
 spring:

@@ -1,17 +1,25 @@
 package com.stream.service;
 
+import com.google.common.collect.Maps;
 import com.stream.model.entity.UserEntity;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Stream on 2018/7/4.
  */
 
 @Service
+@RefreshScope
 public class UserService {
+
+    @Value("${user.name:notGit}")
+    private String profile;
 
     public UserEntity getUser(Long id){
         UserEntity user = new UserEntity();
@@ -41,5 +49,11 @@ public class UserService {
         list.add(u3);
 
         return list;
+    }
+
+    public Map<String,String> getConfig() {
+        Map<String,String> map = Maps.newHashMap();
+        map.put("proFile", profile);
+        return map;
     }
 }

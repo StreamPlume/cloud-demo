@@ -21,11 +21,22 @@ spring:
       name: cloud-simple-test  /cloud-modules/user-server/user-server-dev.yml
       profile: ${config.profile:dev}
       label: master
+    bus:
+      enabled: true
+      trace:
+        enabled: true
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
   zipkin:
     base-url: http://127.0.0.1:9411
+  rabbitmq:
+    host: 127.0.0.1
+#    host: 192.168.0.105
+    port: 5672
+    username: guest
+    password: guest
+
 eureka:
   instance:
     prefer-ip-address: true
@@ -33,8 +44,8 @@ eureka:
     health-check-url-path: /actuator/health
   client:
     serviceUrl:
-      defaultZone: http://127.0.0.1:8761/eureka/
-#      defaultZone: http://192.168.0.104:8761/eureka/ # 曹总电脑
+#      defaultZone: http://127.0.0.1:8761/eureka/
+      defaultZone: http://192.168.0.103:8761/eureka/
 #      defaultZone: http://eureka.didispace.com/
 
 #应用自定义配置信息

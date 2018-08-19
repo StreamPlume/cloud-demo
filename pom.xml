@@ -90,9 +90,9 @@
 		<module>cloud-eureka</module>
 		<module>cloud-config</module>
 		<!--<module>cloud-common</module>-->
-		<module>cloud-gateway</module>
+		<!--<module>cloud-gateway</module>-->
 		<module>cloud-modules</module>
-		<!--<module>cloud-visual</module>-->
+		<module>cloud-visual</module>
 	</modules>
 
 	<dependencyManagement>

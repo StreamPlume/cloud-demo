@@ -2,8 +2,6 @@
 server:
   port: 9002
 
-management:
-  port: 9902
 
 spring:
   application:
@@ -13,14 +11,13 @@ spring:
       #   \u6D4B\u8BD5\u73AF\u5883\uFF1Ajava -jar eureka-server.jar --spring.profiles.active=test
       #   \u751F\u4EA7\u73AF\u5883\uFF1Ajava -jar eureka-server.jar --spring.profiles.active=prod
     active: dev
+management:
+  port: 9902
 
 ---
 
 spring:
   profiles: dev
-
-management:
-  port: 8081
 
 eureka:
   client:

@@ -19,6 +19,8 @@
 
 	<modules>
 		<module>cloud-monitor</module>
+		<module>cloud-hystrix-dashboard</module>
+		<module>cloud-turbine</module>
 		<!--<module>cloud-zipkin-elk</module>-->
 		<!--<module>cloud-zipkin-db</module>-->
 	</modules>

@@ -18,8 +18,11 @@ import java.util.Map;
 @RefreshScope
 public class UserService {
 
-    @Value("${user.name:notGit}")
+    @Value("${user.name:noGit}")
     private String profile;
+
+    @Value("${common.config:noCommonConfig}")
+    private String commonConfig;
 
     public UserEntity getUser(Long id){
         UserEntity user = new UserEntity();
@@ -54,6 +57,7 @@ public class UserService {
     public Map<String,String> getConfig() {
         Map<String,String> map = Maps.newHashMap();
         map.put("proFile", profile);
+        map.put("commonConfig", commonConfig);
         return map;
     }
 }

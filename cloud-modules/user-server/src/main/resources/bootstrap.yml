@@ -26,7 +26,7 @@ spring:
         enabled: true
         service-id:  cloud-config-server
       # 用来定位Git中的资源 cloud-config-repo/cloud-modules/user-server/user-server-dev.yml
-      name: user-server
+      name: common-config,user-server
       profile: ${config.profile:dev}
       label: master
     bus:

@@ -25,7 +25,8 @@ spring:
       discovery:
         enabled: true
         service-id:  cloud-config-server
-      # 用来定位Git中的资源 cloud-config-repo/cloud-modules/user-server/user-server-dev.yml
+      # 用来定位Git中的资源,例如 cloud-config-repo/cloud-modules/user-server/user-server-dev.yml
+      # 需要加载多个配置文件，则多个配置文件用逗号分隔开就行
       name: common-config,user-server
       profile: ${config.profile:dev}
       label: master

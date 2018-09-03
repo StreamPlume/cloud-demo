@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>user-server</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<!--<version>${user-server.version}</version>-->
 	<packaging>jar</packaging>
 
 	<name>user-server</name>
@@ -13,10 +13,13 @@
 	<parent>
 		<groupId>com.stream</groupId>
 		<artifactId>cloud-modules</artifactId>
-		<version>1.1.0</version>
+		<version>1.0.8</version>
 	</parent>
 
 	<properties>
+		<!-- 子模块版本号默认从父模块继承，有特殊需要才修改当前模块版本，否则统一由父模块控制子模块版本  -->
+		<user-server.version>${cloud-modules.version}</user-server.version>
+		<!--<user-server.version>1.1.0</user-server.version>-->
 	</properties>
 
 	<dependencies>
@@ -25,27 +28,17 @@
 			<!--<groupId>org.springframework.boot</groupId>-->
 			<!--<artifactId>spring-boot-starter-cache</artifactId>-->
 		<!--</dependency>-->
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
 		<!--<dependency>-->
-			<!--<groupId>org.springframework.cloud</groupId>-->
-			<!--<artifactId>spring-cloud-starter-netflix-turbine-stream</artifactId>-->
+			<!--<groupId>org.springframework.restdocs</groupId>-->
+			<!--<artifactId>spring-restdocs-mockmvc</artifactId>-->
+			<!--<scope>test</scope>-->
 		<!--</dependency>-->
-
-
-		<dependency>
-			<groupId>org.springframework.restdocs</groupId>
-			<artifactId>spring-restdocs-mockmvc</artifactId>
-			<scope>test</scope>
-		</dependency>
-        <!--<dependency>-->
-            <!--<groupId>org.springframework.cloud</groupId>-->
-            <!--<artifactId>spring-cloud-openfeign-core</artifactId>-->
-            <!--<version>RELEASE</version>-->
-        <!--</dependency>-->
 	</dependencies>
 
 	<build>

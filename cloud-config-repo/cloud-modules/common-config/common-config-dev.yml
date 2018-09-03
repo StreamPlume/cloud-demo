@@ -1,1 +1,1 @@
-common.config: dev test
+common.config: prod test

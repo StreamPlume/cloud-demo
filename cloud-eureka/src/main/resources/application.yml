@@ -15,9 +15,15 @@ spring:
 #  +++++++++++++++++++++++++ start  profile.active = dev  +++++++++++++++++++++++
 #  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ---
+
 # 开发环境配置
 spring:
   profiles: dev
+    # 安全认证的配置
+  security:
+    user:
+      name: admin
+      password: admin
 
 eureka:
   client:
@@ -28,13 +34,15 @@ eureka:
     ##  是否注册到服务中 ，由于是单机版本，设置为 false ， 如果需要配置高可用的 Eureka Server 需要设置为 true
     registerWithEureka: false
     serviceUrl:
-      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@${eureka.instance.hostname}:${server.port}/eureka/
+#      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
   instance:
     hostname: 127.0.0.1
     prefer-ip-address: true #将IP注册到Eureka Server上，如果不配置就是机器的主机名
   server:  # 配置属性，但由于 Eureka 自我保护模式以及心跳周期长的原因，经常会遇到 Eureka Server 不剔除已关停的节点的问题
     enable-self-preservation: false # 设为false，关闭自我保护。 测试时关闭自我保护机制，保证不可用服务及时踢出， 生产环境不建议关闭
     eviction-interval-timer-in-ms: 5000 # 扫描失效服务的间隔时间（单位毫秒，默认是60*1000）即60秒
+
 
 #  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #  +++++++++++++++++++++++++ start  profile.active = test  +++++++++++++++++++++++
@@ -51,6 +59,11 @@ spring:
 # 生产环境配置
 spring:
   profiles: prod
+    # 安全认证的配置
+  security:
+    user:
+      name: admin
+      password: admin
 
 eureka:
   client:
@@ -59,7 +72,7 @@ eureka:
     ##  是否注册到服务中 ，由于是单机版本，设置为 false ， 如果需要配置高可用的 Eureka Server 需要设置为 true
     registerWithEureka: true
     serviceUrl:
-      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@${eureka.instance.hostname}:${server.port}/eureka/
   instance:
     hostname: 127.0.0.1
     prefer-ip-address: true #将IP注册到Eureka Server上，如果不配置就是机器的主机名

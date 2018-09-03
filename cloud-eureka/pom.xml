@@ -3,45 +3,80 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
+	<!-- eureka server 单独作为一个模块，只依赖  spring-boot-starter-parent 模块，和其他具体的服务模块没有共同父依赖。
+	     我觉得保存注册中心的独立性比较好。这样可以根据需要，对注册中心的依赖进行特殊化设置 -->
+
 	<artifactId>cloud-eureka</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.1.0</version>
 	<packaging>jar</packaging>
 
 	<name>cloud-eureka</name>
 	<description>Demo project for Spring cloud-eureka</description>
 
 	<parent>
-		<groupId>com.stream</groupId>
-		<artifactId>cloud-demo</artifactId>
-		<version>1.1.0</version>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.0.3.RELEASE</version>
+		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		<!--<spring-cloud.version>Finchley.RELEASE</spring-cloud.version>-->
+
+		<spring-boot.version>2.0.3.RELEASE</spring-boot.version>
+		<spring-cloud.version>Finchley.RELEASE</spring-cloud.version>
+		<spring-boot-admin.version>2.0.1</spring-boot-admin.version>
 	</properties>
 
 	<dependencies>
-		<!-- 监控和管理的依赖 -->
+
+		<!-- 对当前服务模块开启权限控制 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
+		<!-- 对当前服务进行监控和并提供暴露监控信息的节点。
+		admin-client 可使用这些节点，将监控信息发送到 admin-server -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 
-		<!-- 监控信息发送到amdin控制的依赖 -->
+		<!-- 将监控信息发送到 admin-server，并可以在提供的WEB-UI进行可视化监控 -->
 		<dependency>
 			<groupId>de.codecentric</groupId>
 			<artifactId>spring-boot-admin-starter-client</artifactId>
 		</dependency>
 
+		<!-- eureka 核心依赖，运行eureka 服务，提供服务自动发现，注册，搭建微服务高可用集群 -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
 		</dependency>
 
 	</dependencies>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>de.codecentric</groupId>
+				<artifactId>spring-boot-admin-dependencies</artifactId>
+				<version>${spring-boot-admin.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<build>
 		<plugins>
@@ -51,6 +86,5 @@
 			</plugin>
 		</plugins>
 	</build>
-
 
 </project>

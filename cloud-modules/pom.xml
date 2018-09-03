@@ -3,9 +3,8 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-
 	<artifactId>cloud-modules</artifactId>
-	<version>1.1.0</version>
+	<!--<version>${cloud-modules.version}</version>-->
 	<packaging>pom</packaging>
 
 	<name>cloud-modules</name>
@@ -14,43 +13,44 @@
 	<parent>
 		<groupId>com.stream</groupId>
 		<artifactId>cloud-demo</artifactId>
-		<version>1.1.0</version>
+		<version>1.0.8</version>
 	</parent>
 
+	<modules>
+		<module>user-server</module>
+		<module>user-controller</module>
+	</modules>
+
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>1.8</java.version>
+		<!-- 子模块版本号默认从父模块继承，有特殊需要才修改当前模块版本，否则统一由父模块控制子模块版本  -->
+		<cloud-modules.version>${cloud-demo-root.version}</cloud-modules.version>
+		<!--<cloud-modules.version>1.0.6</cloud-modules.version>-->
+
+		<!--<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>-->
+		<!--<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>-->
+		<!--<java.version>1.8</java.version>-->
 	</properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>de.codecentric</groupId>
-            <artifactId>spring-boot-admin-starter-client</artifactId>
-        </dependency>
+		<!-- 使用配置中心拉取配置 -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-config</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-        </dependency>
 
+		<!-- 熔断器和监控项目依赖jar -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
         </dependency>
 
-		<!-- start 添加消息总线，进行修改配置自动推送更新 -->
+		<!-- 消费者调用服务提供者项目依赖jar  -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-openfeign</artifactId>
+		</dependency>
+
+		<!-- start 添加消息总线，进行修改配置自动推送更新已经其他消息队列功能 -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-bus</artifactId>
@@ -59,7 +59,7 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-stream-binder-rabbit</artifactId>
 		</dependency>
-		<!-- end 添加消息总线，进行修改配置自动推送更新 -->
+		<!-- end 添加消息总线，进行修改配置自动推送更新已经其他消息队列功能 -->
 
         <!-- start  调用链跟踪 sleuth  zipkin 配置 -->
 		<dependency>
@@ -87,34 +87,14 @@
 			<!--<groupId>org.springframework.cloud</groupId>-->
 			<!--<artifactId>spring-cloud-starter-netflix-turbine-stream</artifactId>-->
 		<!--</dependency>-->
-		<!--<dependency>-->
-			<!--<groupId>org.springframework.cloud</groupId>-->
-			<!--<artifactId>spring-cloud-starter-openfeign</artifactId>-->
-		<!--</dependency>-->
+
 
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
 	</dependencies>
-
-	<modules>
-		<module>user-server</module>
-		<module>user-controller</module>
-	</modules>
 
 	<build>
 		<plugins>

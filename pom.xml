@@ -3,9 +3,15 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
+	<!-- 所有服务模块，继承此基类模块，保证依赖版本一致 -->
+	<!-- 所有的服务添加的依赖项目jar文件，都在这里统一控制版本。子模板不写依赖的版本信息 -->
+
+	<!-- 在 maven 中执行 mvn versions:set -DnewVersion=1.0.3 命令，统一更新当前模块和子模块依赖的父模块(parent )节点中的版本号和子模块版本号 -->
+
 	<groupId>com.stream</groupId>
 	<artifactId>cloud-demo</artifactId>
-	<version>1.1.0</version>
+	<version>1.0.8</version>
+	<!--<version>${cloud-demo-root.version}</version>-->
 	<packaging>pom</packaging>
 
 	<name>cloud-demo</name>
@@ -18,20 +24,32 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
+	<!--  modules 聚合（多模块）配置是此POM用来列出作为一组执行的项目。通过此pom构建时可以将配置的模块聚合成一组项目进行构建，这些模块名是这些项目的相对目录。-->
+	<!--  虽然聚合（modules）通常伴随着父POM的继承关系，但是这两者不是必须同时存在的，从两者的作用可以看出来，这两者的都有不同的作用，他们的作用不依赖于另一个的配置。 -->
+	<modules>
+		<module>cloud-config</module>
+		<!--<module>cloud-common</module>-->
+		<module>cloud-gateway</module>
+		<module>cloud-modules</module>
+		<!--<module>cloud-visual</module>-->
+	</modules>
+
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		<cloud-demo.version>1.1.0</cloud-demo.version>
 
+		<!-- 子项目不配置版本信息，默认就是继承父项目版本信息 -->
+		<!-- 当多个子模块需要单独控制版本时，可以根据这个来控制 -->
+		<cloud-demo-root.version>1.0.6</cloud-demo-root.version>
 
 		<spring-platform-bom.version>Cairo-RELEASE</spring-platform-bom.version>
 		<spring-boot.version>2.0.3.RELEASE</spring-boot.version>
 		<spring-cloud.version>Finchley.RELEASE</spring-cloud.version>
 		<spring-boot-admin.version>2.0.1</spring-boot-admin.version>
 
-		<!--Lombok-->
-		<!--<lombok.version>1.16.20</lombok.version>-->
+		<lombok.version>1.16.20</lombok.version>
 
 		<!--<fastjson.version>1.2.46</fastjson.version>-->
 
@@ -49,61 +67,61 @@
 		<!--<spring-boot-admin-server-ui-turbine.version>1.5.6</spring-boot-admin-server-ui-turbine.version>-->
 	</properties>
 
-	<!--公共依赖-->
+	<!--公共基本依赖-->
 	<dependencies>
-		<!--注册中心-->
-		<!--<dependency>-->
-			<!--<groupId>org.springframework.cloud</groupId>-->
-			<!--<artifactId>spring-cloud-starter-eureka</artifactId>-->
-		<!--</dependency>-->
-		<!--配置中心-->
-		<!--<dependency>-->
-			<!--<groupId>org.springframework.cloud</groupId>-->
-			<!--<artifactId>spring-cloud-starter-config</artifactId>-->
-		<!--</dependency>-->
-		<!--&lt;!&ndash;配置文件处理器&ndash;&gt;-->
+
+		<!-- 对当前服务模块开启权限控制 -->
 		<!--<dependency>-->
 			<!--<groupId>org.springframework.boot</groupId>-->
-			<!--<artifactId>spring-boot-configuration-processor</artifactId>-->
-			<!--<optional>true</optional>-->
+			<!--<artifactId>spring-boot-starter-security</artifactId>-->
 		<!--</dependency>-->
-		<!--&lt;!&ndash;监控&ndash;&gt;-->
+
+		<!-- 对当前服务进行监控和并提供暴露监控信息的节点。
+		admin-client 可使用这些节点，将监控信息发送到 admin-server -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+
+		<!-- 将监控信息发送到 admin-server，并可以在提供的WEB-UI进行可视化监控 -->
+		<dependency>
+			<groupId>de.codecentric</groupId>
+			<artifactId>spring-boot-admin-starter-client</artifactId>
+		</dependency>
+
+		<!--  将当前项目作为客户端注册到 eureka服务 注册中心   -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+		</dependency>
+
+		<!-- spring boot 项目开发时进行代码热替换 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!--测试依赖-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
 		<!--<dependency>-->
-			<!--<groupId>org.springframework.boot</groupId>-->
-			<!--<artifactId>spring-boot-starter-actuator</artifactId>-->
-		<!--</dependency>-->
-		<!--&lt;!&ndash;Lombok&ndash;&gt;-->
-		<!--<dependency>-->
-			<!--<groupId>org.projectlombok</groupId>-->
-			<!--<artifactId>lombok</artifactId>-->
-			<!--<version>${lombok.version}</version>-->
-		<!--</dependency>-->
-		<!--&lt;!&ndash;测试依赖&ndash;&gt;-->
-		<!--<dependency>-->
-			<!--<groupId>org.springframework.boot</groupId>-->
-			<!--<artifactId>spring-boot-starter-test</artifactId>-->
+			<!--<groupId>org.springframework.security</groupId>-->
+			<!--<artifactId>spring-security-test</artifactId>-->
 			<!--<scope>test</scope>-->
 		<!--</dependency>-->
+
 	</dependencies>
 
-	<modules>
-		<module>cloud-eureka</module>
-		<module>cloud-config</module>
-		<!--<module>cloud-common</module>-->
-		<!--<module>cloud-gateway</module>-->
-		<module>cloud-modules</module>
-		<module>cloud-visual</module>
-	</modules>
-
+	<!-- 子模块依赖的项目jar文件，统一在这里控制好版本信息 -->
 	<dependencyManagement>
 		<dependencies>
-			<dependency>
-				<groupId>io.spring.platform</groupId>
-				<artifactId>platform-bom</artifactId>
-				<version>${spring-platform-bom.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
+			<!-- 此项目用来控制 spring-cloud 相关的子项目是 ${spring-cloud.version} 版本下经官方校验的兼容版本 -->
+			<!-- 因此该模块的子模块引用相关依赖时，只用写 groupId 和 artifactId，不用写版本 -->
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>
@@ -111,6 +129,16 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+
+			<!-- 此项目用来控制基本引用的项目是 ${spring-boot-admin.version} 此版本下经官方校验兼容的版本 -->
+			<dependency>
+				<groupId>io.spring.platform</groupId>
+				<artifactId>platform-bom</artifactId>
+				<version>${spring-platform-bom.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
 			<dependency>
 				<groupId>de.codecentric</groupId>
 				<artifactId>spring-boot-admin-dependencies</artifactId>
@@ -118,11 +146,35 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+
+
+			<!-- 用来进行 entity 的 Constructor  seter getter 等方法，日志工具实例等自动生成，简化代码-->
+			<dependency>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok</artifactId>
+				<version>${lombok.version}</version>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 
+
 	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>versions-maven-plugin</artifactId>
+					<version>2.6</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>versions-maven-plugin</artifactId>
+				<!--<version>2.6</version>-->
+			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>

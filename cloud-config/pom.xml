@@ -4,42 +4,36 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>cloud-config</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<!--<version>${cloud-config.version}</version>-->
 	<packaging>jar</packaging>
 
 	<name>cloud-config</name>
 	<description>Demo project for Spring cloud-config</description>
 
+
 	<parent>
 		<groupId>com.stream</groupId>
 		<artifactId>cloud-demo</artifactId>
-		<version>1.1.0</version>
+		<version>1.0.8</version>
 	</parent>
 
 	<properties>
+		<!-- 子模块版本号默认从父模块继承，有特殊需要才修改当前模块版本，否则统一由父模块控制子模块版本  -->
+		<cloud-config.version>${cloud-demo-root.version}</cloud-config.version>
+		<!--<cloud-config.version>1.0.6</cloud-config.version>-->
+
 		<!--<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>-->
 		<!--<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>-->
 	</properties>
 
 	<dependencies>
-		<!-- 监控和管理的依赖 -->
+		<!-- 对当前服务模块开启权限控制 -->
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
+		  <groupId>org.springframework.boot</groupId>
+		  <artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 
-		<!-- 监控信息发送到amdin server 控制的依赖 -->
-		<dependency>
-			<groupId>de.codecentric</groupId>
-			<artifactId>spring-boot-admin-starter-client</artifactId>
-		</dependency>
-
-		<!--  注册到eureka服务器 注册中心的相关依赖   -->
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-		</dependency>
-		<!-- 配置服务器主要的依赖 -->
+		<!-- 作为配置服务器项目依赖的jar -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-config-server</artifactId>
@@ -57,6 +51,7 @@
 		<!-- end 添加消息总线，进行修改配置自动推送更新 -->
 
 	</dependencies>
+
 
 	<build>
 		<plugins>

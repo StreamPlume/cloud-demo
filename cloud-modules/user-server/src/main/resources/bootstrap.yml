@@ -10,14 +10,14 @@ spring:
 #  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #  +++++++++++++++++++++++++ start  profile.active = dev  +++++++++++++++++++++++
 #  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
----
 
+---
 spring:
   profiles: dev
-  security:
-    user:
-      name: 'admin'
-      password: 'admin'
+#  security:
+#    user:
+#      name: admin
+#      password: admin
   cloud:
     # 开启通过注册中心来访问 cloud-config-server 服务的功能
     config:
@@ -28,8 +28,10 @@ spring:
       # 用来定位Git中的资源,例如 cloud-config-repo/cloud-modules/user-server/user-server-dev.yml
       # 需要加载多个配置文件，则多个配置文件用逗号分隔开就行
       name: common-config,user-server
-      profile: ${config.profile:dev}
+      profile: ${spring.profiles.active:dev}
       label: master
+      username: admin
+      password: admin
     bus:
       # 开启 消息总线 bus stream
       enabled: true
@@ -57,7 +59,9 @@ eureka:
       user.password: ${spring.security.user.password}
   client:
     serviceUrl:
-      defaultZone: http://127.0.0.1:8761/eureka/
+      defaultZone: http://admin:admin@127.0.0.1:8761/eureka/
+#       defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@127.0.0.1:8761/eureka/
+#      defaultZone: http://127.0.0.1:8761/eureka/
 #      defaultZone: http://192.168.0.103:8761/eureka/
 #      defaultZone: http://eureka.didispace.com/
 

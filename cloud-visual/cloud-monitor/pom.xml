@@ -3,9 +3,8 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.stream</groupId>
 	<artifactId>cloud-monitor</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<!--<version>${cloud-monitor.version}</version>-->
 	<packaging>jar</packaging>
 
 	<name>cloud-monitor</name>
@@ -14,13 +13,17 @@
 	<parent>
 		<groupId>com.stream</groupId>
 		<artifactId>cloud-visual</artifactId>
-		<version>1.1.0</version>
+		<version>1.0.8</version>
 	</parent>
 
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>1.8</java.version>
+		<!-- 子模块版本号默认从父模块继承，有特殊需要才修改当前模块版本，否则统一由父模块控制子模块版本  -->
+		<cloud-monitor.version>${cloud-visual.version}</cloud-monitor.version>
+		<!--<cloud-monitor.version>1.0.6</cloud-monitor.version>-->
+
+		<!--<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>-->
+		<!--<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>-->
+		<!--<java.version>1.8</java.version>-->
 	</properties>
 
 	<dependencies>

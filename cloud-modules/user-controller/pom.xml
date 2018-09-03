@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>user-controller</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<!--<version>${user-controller.version}</version>-->
 	<packaging>jar</packaging>
 
 	<name>user-controller</name>
@@ -13,13 +13,17 @@
 	<parent>
 		<groupId>com.stream</groupId>
 		<artifactId>cloud-modules</artifactId>
-		<version>1.1.0</version>
+		<version>1.0.8</version>
 	</parent>
 
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>1.8</java.version>
+		<!-- 子模块版本号默认从父模块继承，有特殊需要才修改当前模块版本，否则统一由父模块控制子模块版本  -->
+		<user-controller.version>${cloud-modules.version}</user-controller.version>
+		<!--<user-controller.version>1.1.0</user-controller.version>-->
+
+		<!--<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>-->
+		<!--<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>-->
+		<!--<java.version>1.8</java.version>-->
 	</properties>
 
 	<dependencies>
@@ -27,11 +31,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-openfeign</artifactId>
 		</dependency>
 
 		<!--<dependency>-->

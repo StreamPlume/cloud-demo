@@ -20,11 +20,17 @@ spring:
 ---
 spring:
   profiles: dev
+  security:
+    user:
+      name: admin
+      password: admin
 
 eureka:
     client:
         serviceUrl:
-            defaultZone: http://127.0.0.1:8761/eureka/
+          #  defaultZone: http://admin:admin@127.0.0.1:8761/eureka/
+            defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@127.0.0.1:8761/eureka/
+#            defaultZone: http://127.0.0.1:8761/eureka/
 #            defaultZone: http://192.168.0.101:8761/eureka/
     instance:
       prefer-ip-address: true
@@ -44,6 +50,7 @@ spring:
 eureka:
     client:
         serviceUrl:
-            defaultZone: http://192.168.0.101:8761/eureka/
+          #  defaultZone: http://admin:admin@127.0.0.1:8761/eureka/
+            defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@127.0.0.1:8761/eureka/
     instance:
       prefer-ip-address: true

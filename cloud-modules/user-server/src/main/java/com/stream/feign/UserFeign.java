@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
-import java.util.Map;
 
 @FeignClient(name = "user-server",fallback = UserFeignFallbackImpl.class)
 public interface UserFeign {
@@ -27,10 +26,4 @@ public interface UserFeign {
 
     @GetMapping("/user/list")
     List<UserEntity> queryAll();
-
-    @GetMapping("/user/test")
-    UserEntity test();
-
-    @GetMapping("/user/queryGit")
-    Map<String,String> queryGit();
 }

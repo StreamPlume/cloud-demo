@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Stream on 2018/7/5.
@@ -33,17 +32,5 @@ public class UserFeignFallbackImpl implements UserFeign {
     @Override
     public List<UserEntity> queryAll() {
         return Collections.EMPTY_LIST;
-    }
-
-    @Override
-    public UserEntity test() {
-        UserEntity user = new UserEntity();
-        user.setName("UserFeignFallbackImpl- test");
-        return user;
-    }
-
-    @Override
-    public Map<String, String> queryGit() {
-        return null;
     }
 }

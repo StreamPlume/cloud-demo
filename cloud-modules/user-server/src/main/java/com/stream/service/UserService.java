@@ -27,12 +27,18 @@ public class UserService {
     public UserEntity getUser(Long id){
         UserEntity user = new UserEntity();
         user.setId(id);
-        user.setName("user-server Stream");
-        char[] password = {'1','2','3'};
-        user.setPassword(password);
+        user.setName("user-server Stream " + id);
+        user.setPassword("123456".toCharArray());
         return user;
     }
 
+    public UserEntity getUser(String name){
+        UserEntity user = new UserEntity();
+        user.setId(1L);
+        user.setName(name);
+        user.setPassword("123456".toCharArray());
+        return user;
+    }
 
     public List<UserEntity> queryAll(){
         List<UserEntity> list = new ArrayList<>();

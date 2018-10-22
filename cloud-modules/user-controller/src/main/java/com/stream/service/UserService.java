@@ -20,14 +20,17 @@ public class UserService {
 //            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "100")
 //    })
     public UserEntity queryUser(Long id){
-        return userFeignClient.queryUser(id);
+        return userFeignClient.queryId(id);
     }
-
 
     public UserEntity queryUserFallback(Long id) {
         UserEntity user = new UserEntity();
         user.setName("queryUserFallback");
         return user;
+    }
+
+    public UserEntity queryName(String userName){
+        return userFeignClient.queryName(userName);
     }
 
     public List<UserEntity> queryAll(){
@@ -39,10 +42,7 @@ public class UserService {
     }
 
     public UserEntity queryTest(){
-        return userFeignClient.queryTest();
+        return userFeignClient.test();
     }
 
-    public UserEntity queryUserService(){
-        return userFeignClient.queryUserServer();
-    }
 }

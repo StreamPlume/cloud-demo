@@ -44,6 +44,53 @@ eureka:
     eviction-interval-timer-in-ms: 5000 # 扫描失效服务的间隔时间（单位毫秒，默认是60*1000）即60秒
 
 
+management:
+  server:
+    #actuator 监控服务的端口
+    port: 9001
+    servlet:
+      # actuator 监控服务的
+      context-path: /management
+    #actuator端口
+  endpoints:
+    web:
+      #为管理端点设置单独路径。 修改访问路径  2.0之前默认是/   2.0默认是 /actuator  可以通过这个属性值修改
+      base-path: /actuator
+      exposure:
+        # 开放所有页面节点  默认只开启了health、info两个节点
+        include: "*"
+        # 隐藏指定节点
+        exclude: test
+  # 配置具体节点信息
+  endpoint:
+    # always-一直显示健康具体信息;never-不会显示详细信息(默认);when-authorized - 授权才可展示
+    health:
+      show-details: always
+
+# 查看程序健康信息 http://localhost:9001/management/actuator/health
+
+#  auditevents
+#  beans
+#  conditions
+#  configprops
+#  env
+#  flyway
+#  health
+#  heapdump
+#  httptrace
+#  info
+#  jolokia
+#  logfile
+#  loggers
+#  liquibase
+#  metrics
+#  mappings
+#  prometheus
+#  scheduledtasks
+#  sessions
+#  shutdown
+#  threaddump
+
 #  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #  +++++++++++++++++++++++++ start  profile.active = test  +++++++++++++++++++++++
 #  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

@@ -19,7 +19,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-
     @PostMapping("/info/{id}")
     public UserEntity queryUser(@PathVariable Long id){
 
@@ -29,11 +28,11 @@ public class UserController {
         return user;
     }
 
-    @PostMapping("/queryUserController")
-    public UserEntity queryUserController(){
+    @PostMapping("/name")
+    public UserEntity queryUserController(@RequestParam String userName){
 
         log.info("queryUser");
-        UserEntity user = userService.queryUserService();
+        UserEntity user = userService.queryName(userName);
 
         return user;
     }

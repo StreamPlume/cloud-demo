@@ -6,8 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 
@@ -22,49 +20,28 @@ public class UserController {
 
     @Autowired UserService userService;
 
-    @PostMapping("/info/{id}")
-    public UserEntity queryUser(@PathVariable Long id){
+    @GetMapping("/{id}")
+    public UserEntity queryId(@PathVariable Long id){
         UserEntity user;
         user = userService.getUser(id);
-        try {
-//            int time = (int) (Math.random() *150) ;
-//            Thread.sleep(time);
-            Thread.sleep(10000l);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         return user;
     }
 
-    @PostMapping("/queryUserServer")
-    public UserEntity queryUserServer(){
+    @PostMapping("/name")
+    public UserEntity queryName(@RequestParam String userName){
         UserEntity user;
-        Long i = Double.valueOf(Math.random() *1000).longValue() ;
-        user = userService.getUser(i);
+        user = userService.getUser(userName);
         return user;
     }
 
-    @GetMapping("/queryAll")
-    public List<UserEntity> queryAll() {
+    @GetMapping("/list")
+    public List<UserEntity> list() {
         return userService.queryAll();
     }
 
     @GetMapping("/test")
-    public UserEntity queryTest(HttpServletRequest request){
-        Enumeration<String> parameterNames = request.getParameterNames();
-        Enumeration<String> headerNames = request.getHeaderNames();
-
-        while (headerNames.hasMoreElements()) {
-            String name = headerNames.nextElement();
-            log.info("queryTest -->" + name + " : " + request.getHeader(name));
-        }
-
-        UserEntity user = new UserEntity();
-        user.setId(0L);
-        user.setName("user-server test");
-        user.setSex("man");
-        return user;
+    public String test(){
+        return "hollo world!";
     }
 
     @GetMapping("/queryGit")

@@ -99,3 +99,8 @@ spring在获得token后，必须要调用一下resource.userInfoUri里的接口�
 
 
 https://github.com/babylikebird/Micro-Service-Skeleton
+
+https://segmentfault.com/a/1190000015637117
+https://www.jianshu.com/p/3bc6c16961c5
+
+https://www.jianshu.com/p/bf5dd33aea6d

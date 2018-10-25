@@ -1,0 +1,98 @@
+
+server:
+  port: 8900
+
+spring:
+  application:
+    name: oauth2-server
+  profiles:
+    #   默认的profile为dev，其他环境通过指定启动参数使用不同的profile，比如：
+    #   测试环境：java -jar eureka-server.jar --spring.profiles.active=test
+    #   生产环境：java -jar eureka-server.jar --spring.profiles.active=prod
+    active: dev
+
+#  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#  +++++++++++++++++++++++++ start  profile.active = dev  +++++++++++++++++++++++
+#  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+---
+
+# 开发环境配置
+spring:
+  profiles: dev
+
+eureka:
+    client:
+        serviceUrl:
+          defaultZone: http://admin:admin@127.0.0.1:8761/eureka/
+#          defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@127.0.0.1:8761/eureka/
+#          defaultZone: http://127.0.0.1:8761/eureka/
+#            defaultZone: http://192.168.0.101:8761/eureka/
+    instance:
+      prefer-ip-address: true
+      # 心跳检测检测与续约时间   测试时将值设置设置小些，保证服务关闭后注册中心能及时踢出服务
+      lease-renewal-interval-in-seconds: 5 # 每间隔5s，向服务端发送一次心跳，证明自己依然”存活“.心跳时间，即服务续约间隔时间（缺省为30s）
+      lease-expiration-duration-in-seconds: 10 #  告诉服务端，如果我10s之内没有给你发心跳，就代表我“死”了，将我踢出掉。（缺省为90s）
+      health-check-url-path: /actuator/health
+
+#      metadata-map:
+#        user.name: ${spring.security.user.name}
+#        user.password: ${spring.security.user.password}
+
+#security:
+#  oauth2:
+#    resource:
+#      serviceId: ${PREFIX:}resource
+#      # refer to: https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-1.5-Release-Notes#oauth-2-resource-filter
+#      filter-order: 3
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
+
+
+#  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#  +++++++++++++++++++++++++ start  profile.active = test  +++++++++++++++++++++++
+#  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+---
+# 测试环境配置
+spring:
+  profiles: test
+
+#  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#  +++++++++++++++++++++++++ start  profile.active = prod  ++++++++++++++++++++++
+#  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+---
+spring:
+  profiles: prod
+  # 安全认证的配置
+  security:
+    user:
+      name: admin
+      password: admin
+  cloud:
+    config:
+      server:
+        default-label: master
+        git:
+          search-paths: cloud-config-repo
+          uri: https://github.com/StreamPlume/cloud-demo.git
+
+eureka:
+    client:
+        serviceUrl:
+          defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@127.0.0.1:8761/eureka/
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS

@@ -1,0 +1,147 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: cloud-zuul-gateway
+  profiles:
+        #   默认的profile为dev，其他环境通过指定启动参数使用不同的profile，比如：
+        #   测试环境：java -jar eureka-server.jar --spring.profiles.active=test
+        #   生产环境：java -jar eureka-server.jar --spring.profiles.active=prod
+    active: dev
+
+#  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#  +++++++++++++++++++++++++ start  profile.active = dev  +++++++++++++++++++++++
+#  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+---
+
+spring:
+  profiles: dev
+#  security:
+#    user:
+#      name: admin
+#      password: admin
+  cloud:
+    # 开启通过注册中心来访问 cloud-config-server 服务的功能
+    config:
+      # 开启消息总线后，可以通过 actuator/bus-refresh/ 刷新配置，得到最新提交的配置。 然后 刷新 @RefreshScope 修饰的类
+      discovery:
+        enabled: true
+        service-id:  cloud-config-server
+      # 用来定位Git中的资源,例如 cloud-config-repo/cloud-modules/user-server/user-server-dev.yml
+      # 需要加载多个配置文件，则多个配置文件用逗号分隔开就行
+      name: common-config,cloud-zuul-gateway
+      profile: ${spring.profiles.active:dev}
+      label: master
+      username: admin
+      password: admin
+    bus:
+      # 开启 消息总线 bus stream
+      enabled: true
+      trace:
+        enabled: true
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  security:
+    oauth2:
+      client:
+        provider:
+        registration:
+          zuul:
+            clientId: client
+            clientSecret: 123456
+        client-id:
+#  zipkin:
+#    base-url: http://127.0.0.1:9411
+#  rabbitmq:
+##    host: 127.0.0.1
+#    host: 192.168.0.105
+#    port: 5672
+#    username: guest
+#    password: guest
+
+auth-server: http://localhost:8900 # 认证服务器地址
+
+#spring.security.oauth2.client
+
+#security:
+#  oauth2:
+#    client:
+#      clientId: client
+#      clientSecret: 123456
+#      grant-type: password
+#      scope: app
+#      userAuthorizationUri: ${auth-server}/oauth/authorize
+#      access-token-uri: ${auth-server}/oauth/token
+#    resource:
+#      userInfoUri: ${auth-server}/users/me
+#      prefer-token-info: false
+##    authorization:
+##      check-token-access: ${auth-server}/oauth/check_token
+##  basic:
+##    enabled: false
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    status-page-url-path: /actuator/info
+    health-check-url-path: /actuator/health
+    metadata-map:
+      user.name: ${spring.security.user.name}
+      user.password: ${spring.security.user.password}
+  client:
+    serviceUrl:
+      defaultZone: http://admin:admin@127.0.0.1:8761/eureka/
+#       defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@127.0.0.1:8761/eureka/
+#      defaultZone: http://127.0.0.1:8761/eureka/
+#      defaultZone: http://192.168.0.103:8761/eureka/
+#      defaultZone: http://eureka.didispace.com/
+
+# ================= spring mvc 返回 json字符配置信息
+# 指定日期格式的格式
+#spring.jackson.date-format=yyyy-MM-dd HH:mm:ss
+#spring.jackson.time-zone=GMT+8
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      cors:
+        allowed-origins: "*"
+        allowed-methods: "*"
+
+
+#  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#  +++++++++++++++++++++++++ start  profile.active = prod  ++++++++++++++++++++++
+#  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+---
+
+spring:
+  profiles: prod
+  cloud:
+    # 开启通过注册中心来访问 cloud-config-server 服务的功能
+#    config:
+#      discovery:
+#        enabled: true
+#        service-id: cloud-config-server
+#      # 用来定位Git中的资源
+#      name: cloud-simple
+#      profile: ${spring.profiles.active:prod}
+#      label: master
+  zipkin:
+    base-url: http://127.0.0.1:9411
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://192.168.0.102:8761/eureka/
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      cors:
+        allowed-origins: "*"
+        allowed-methods: "*"

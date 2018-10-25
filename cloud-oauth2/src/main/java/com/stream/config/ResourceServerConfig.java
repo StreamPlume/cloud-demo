@@ -1,15 +1,17 @@
 package com.stream.config;
 
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 
 /**
  * Created by Stream on 2018/9/9.
  */
-//@Configuration
-//@EnableResourceServer
+@Configuration
+@EnableResourceServer
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     @Override
@@ -19,14 +21,33 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//        http
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .and()
+//                .requestMatchers()
+//                .antMatchers("/users/**")
+//                .and().authorizeRequests()
+//                .antMatchers("/users/**")
+//                .authenticated();
+
+        http.httpBasic()
                 .and()
-                .requestMatchers()
-                .antMatchers("/users/**")
-                .and().authorizeRequests()
-                .antMatchers("/users/**")
-                .authenticated();
+                    .csrf().disable()
+                    .requestMatchers()
+                    .antMatchers("/users/**")
+                .and()
+                    .authorizeRequests()
+                    .antMatchers("/login").permitAll()
+                    .antMatchers("/users/**").authenticated()
+                    .anyRequest().authenticated()
+                .and()
+                    .formLogin()
+                .and()
+                    .logout().permitAll()
+                .and()
+                    .sessionManagement()
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        ;
     }
 
 

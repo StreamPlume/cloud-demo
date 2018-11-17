@@ -5,6 +5,7 @@
 /oauth/check_token：用于资源服务访问的令牌解析端点
 /oauth/token_key：提供公有密匙的端点，如果你使用JWT令牌的话
 
+Y2xpZW50OjEyMzQ1Ng==
 ===================================================
 GrantType authorization_code （授权码模式）
 步骤一: 获取客户端 client_id=client  对应 code （在浏览器测试，使用postman工具发起请求，无法重定向到指定页面）

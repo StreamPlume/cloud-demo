@@ -1,6 +1,13 @@
 
 server:
   port: 8900
+  servlet:
+    session:
+      cookie:
+       # 自定义 cookie 解决 BadCredentialsException: Could not obtain access token 问题
+       # 触发原因：是因为在同一个域名下localhost下，授权服务器和资源服务器的 Cookie 名都是 JSESSIONID，
+       # 导致在跳转到授权服务器后将资源服务器的 Cookie 覆盖了，再次跳转回去时授权服务器的 Cookie 对资源服务器无效，再次跳转到登录页面，该动作一直重复，导致授权失败
+        name: OAUTH2_SESSIONID
 
 spring:
   application:
@@ -38,12 +45,16 @@ eureka:
 #        user.name: ${spring.security.user.name}
 #        user.password: ${spring.security.user.password}
 
-#security:
-#  oauth2:
-#    resource:
-#      serviceId: ${PREFIX:}resource
-#      # refer to: https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-1.5-Release-Notes#oauth-2-resource-filter
-#      filter-order: 3
+# 资源服务器连接授权服务器进行授权的配置
+security:
+  oauth2:
+    client:
+      client-id: client
+      client-secret: 123456
+    resource:
+#      service-id: resource-server
+      token-info-uri:  http://localhost:8900/oauth/check_token
+
 
 management:
   endpoints:

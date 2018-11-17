@@ -2,10 +2,8 @@ package com.stream.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
-import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 
 /**
  * Created by Stream on 2018/9/9.
@@ -14,41 +12,53 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
 @EnableResourceServer
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
+//    @Override
+//    public void configure(ResourceServerSecurityConfigurer resources) {
+//        resources.resourceId("users-info");
+//    }
+
+
+    // 配置需要资源服务器通过 ?access_token=47bc9b8c-40d6-4233-b414-c6b5f640d848 鉴权的资源 url
+    // 资源服务器没配置的url，由授权服务器控制
     @Override
-    public void configure(ResourceServerSecurityConfigurer resources) {
-        resources.resourceId("users-info");
+    public void configure(HttpSecurity http) throws Exception { // @formatter:off
+        http.requestMatchers()
+                //匹配到 antMatchers 中ant正则表达式的 url 使用这个 HttpSecurity 规则鉴权
+                .antMatchers("/user/**")
+            .and()
+                .authorizeRequests()
+                .anyRequest().authenticated()
+            .and()
+                .formLogin()
+                .permitAll();
     }
 
-    @Override
-    public void configure(HttpSecurity http) throws Exception {
-//        http
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//    @Override
+//    public void configure(HttpSecurity http) throws Exception {
+//
+//        http.httpBasic()
 //                .and()
-//                .requestMatchers()
-//                .antMatchers("/users/**")
-//                .and().authorizeRequests()
-//                .antMatchers("/users/**")
-//                .authenticated();
-
-        http.httpBasic()
-                .and()
-                    .csrf().disable()
-                    .requestMatchers()
-                    .antMatchers("/users/**")
-                .and()
-                    .authorizeRequests()
-                    .antMatchers("/login").permitAll()
-                    .antMatchers("/users/**").authenticated()
-                    .anyRequest().authenticated()
-                .and()
-                    .formLogin()
-                .and()
-                    .logout().permitAll()
-                .and()
-                    .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        ;
-    }
+//                    .csrf().disable()
+//                    .requestMatchers()
+//                    .antMatchers("/users/**")
+//                .and()
+//                    .authorizeRequests()
+////                    .antMatchers("/oauth/authorize").fullyAuthenticated()
+//                    .antMatchers("/login").permitAll()
+//                    .antMatchers("/users/**").authenticated()
+//                    .anyRequest().authenticated()
+////                .and()
+////                    .requestMatchers()
+////                    .antMatchers("/oauth/authorize",/*tokenKeyPath, checkTokenPath,*/ "/users/**")
+//                .and()
+//                    .formLogin()
+//                .and()
+//                    .logout().permitAll()
+//                .and()
+//                    .sessionManagement()
+//                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//        ;
+//    }
 
 
     /**
